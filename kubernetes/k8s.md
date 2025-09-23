@@ -17,7 +17,7 @@ CNI: Provides basic Pod-to-Pod connectivity (network foundation)
 kube-proxy: Manages service discovery and load balancing (service abstraction)
 
 |Feature          |	CNI Plugin                                                  |	Kube-Proxy
-|--------------------------------------------------------------------------------------------------------------------------------------------------------
+|-----------------|-----------------------------------------------------------------|--------------------------------------------------------------------
 |Primary Role	 | Basic network connectivity for Pods                               |	Service abstraction and load balancing
 |Core Function	 | Assigns IP addresses to Pods; enables cross-node Pod communication |   Translates Service IPs to backend Pod IPs; implements load balancing
 |What It Manages | Pod IPs, network interfaces, routing, network policies            |	Network rules (iptables/IPVS) for Service traffic routing
