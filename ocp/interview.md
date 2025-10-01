@@ -74,6 +74,7 @@ Vulnerablities
 Vendor components (Dynatrce/logscale/sysdig)
 
 ==================================
+Issues
 
 1- Image pullback
 2- File system issue (dmesg)
@@ -83,6 +84,12 @@ Vendor components (Dynatrce/logscale/sysdig)
 6- disk full issue
 7- Pods scheduling 
 8- Health check issue
+
+==================================
+
+What are operators
+
+Operators are software extensions that automate the lifecycle of applications and platform components.
 
 
 
