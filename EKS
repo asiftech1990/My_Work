@@ -2,6 +2,15 @@ Authentication
 
 Here is the flow
 1- Setup aws-sso, then integrate with AD connector which proxy to your on-prem LDAP.
+aws configure sso
+
+SSO session name: company-sso
+SSO start URL: https://yourcompany.awsapps.com/start
+SSO region: us-east-1
+SSO account: <your-account-id>
+SSO role name: EKS-Admin (or EKS-Dev, etc.)
+
+
 2- Create IAM permission set in IAM Identity Center – (EKS-Admin, EKS-ReadOnly, EKS-Dev)
 3- Update aws-auth  configmap with permission set
 
