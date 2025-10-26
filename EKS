@@ -4,7 +4,70 @@ Here is the flow
 1- Setup aws-sso, then integrate with AD connector which proxy to your on-prem LDAP.
 2- Create IAM permission set in IAM Identity Center – (EKS-Admin, EKS-ReadOnly, EKS-Dev)
 3- Update aws-auth  configmap with permission set
+
+kubectl get configmap aws-auth -n kube-system -o yaml
+
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: arn:aws:iam::123456789012:role/EKS-AdminRole
+      username: eks-admin
+      groups:
+        - system:masters
+    - rolearn: arn:aws:iam::123456789012:role/EKS-DevRole
+      username: eks-dev
+      groups:
+        - dev-team
+  mapUsers: |
+    - userarn: arn:aws:iam::123456789012:user/alice
+      username: alice
+      groups:
+        - system:masters
+
+
 4- Create EKS Role for view/edit/admin
+
+
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: dev
+  name: dev-namespace-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "configmaps"]
+  verbs: ["get", "list", "watch", "create", "update", "delete"]
+
+
 5- Create rolebinding and map EKS Role to IAM Permission set users available in aws-auth
+
+# Kubernetes RBAC
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: dev
+  name: dev-namespace-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services"]
+  verbs: ["get", "list", "create", "delete"]
+
+kind: RoleBinding
+metadata:
+  name: dev-namespace-binding
+  namespace: dev
+subjects:
+- kind: Group
+  name: dev-team        # This matches aws-auth group
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: dev-namespace-role
+  apiGroup: rbac.authorization.k8s.io
 
 Installation
