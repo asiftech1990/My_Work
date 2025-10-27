@@ -80,3 +80,16 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 
 Installation
+
+=============================================
+
+Little more about authentication
+
+- When we create namespace, it automatically creates IAM Role for that namespace, namespace role and add this IAM Role and attach necessary permission like DescribeCluster and add it in aws_auth CM, then create a rolebinding for Kubernetes role and IAM role.
+
+
+================================================
+
+1- AWS EBS CSI Drive Pluging for Dynaic provisioning.
+2- OpenID Connect (OIDC) provider URL
+3- Cloud Trail - Event History
