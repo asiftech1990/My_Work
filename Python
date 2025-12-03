@@ -1,36 +1,36 @@
 Pythin Validator
 
-import json
+# validate_config.py
+import yaml
 import sys
 
-def validate_config(configuration):
-    # same validation logic as before
+# Read YAML file
+with open("config.yaml") as f:
+    config = yaml.safe_load(f)
+
+# Validation logic
+def validate_config(config):
     required_keys = ["service_name", "env", "port"]
-    if not all(k in configuration for k in required_keys):
+    allowed_envs = {"dev", "staging", "prod"}
+
+    if not all(k in config for k in required_keys):
         print("Missing required keys")
         return False
-
-    if configuration["env"] not in {"dev", "staging", "prod"}:
+    if config["env"] not in allowed_envs:
         print("Invalid environment value")
         return False
-
-    if not isinstance(configuration["service_name"], str) or not configuration["service_name"].strip():
+    if not isinstance(config["service_name"], str) or not config["service_name"].strip():
         print("Invalid service_name")
         return False
-
-    if not (1 <= configuration["port"] <= 65535):
+    if not (1 <= config["port"] <= 65535):
         print("Invalid port value")
         return False
-
     print("Configuration is valid")
     return True
 
-# Read config from JSON
-with open("config.json") as f:
-    config = json.load(f)
-
+# Run validation
 if not validate_config(config):
-    sys.exit(1)  # Fail the pipeline
+    sys.exit(1)  # exit with error code if invalid
 
 
 
