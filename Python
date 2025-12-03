@@ -1,0 +1,62 @@
+Pythin Validator
+
+import json
+import sys
+
+def validate_config(configuration):
+    # same validation logic as before
+    required_keys = ["service_name", "env", "port"]
+    if not all(k in configuration for k in required_keys):
+        print("Missing required keys")
+        return False
+
+    if configuration["env"] not in {"dev", "staging", "prod"}:
+        print("Invalid environment value")
+        return False
+
+    if not isinstance(configuration["service_name"], str) or not configuration["service_name"].strip():
+        print("Invalid service_name")
+        return False
+
+    if not (1 <= configuration["port"] <= 65535):
+        print("Invalid port value")
+        return False
+
+    print("Configuration is valid")
+    return True
+
+# Read config from JSON
+with open("config.json") as f:
+    config = json.load(f)
+
+if not validate_config(config):
+    sys.exit(1)  # Fail the pipeline
+
+
+
+Python Raw validator
+
+configuration = {
+    "service_name" : "checkout-ms",
+    "env" : "test",
+    "port" : 2020
+}
+
+allowed_envs = {"dev", "staging", "prod"}
+
+
+def validate_config(configuration):
+    if "service_name" in configuration and "env" in configuration and "port" in configuration:
+        if configuration["env"] in allowed_envs:
+            if isinstance(configuration["service_name"], str) or configuration["service_name"].strip():
+                if configuration["port"] <= 65535:
+                    print("configuration is valid")
+                else:
+                    print("Port is in valid")
+            else:
+                print("Service_name is empty")
+        else:
+            print("Invalid environment name")
+    else:
+        print("Key is missing or incorrect")
+validate_config(configuration)
